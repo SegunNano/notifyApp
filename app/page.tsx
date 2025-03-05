@@ -1,7 +1,13 @@
+import getSession from "@/utils/getSession";
+
+export default async function Home() {
+  const session = await getSession()
 
 
-export default function Home() {
-  return (
+  return session ? (
+    <div></div>
+  ) : (
     <div>Home</div>
-  );
+  )
+
 }
