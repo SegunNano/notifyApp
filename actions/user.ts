@@ -23,7 +23,7 @@ const login = async (formData: FormData) => {
         const err = error as CredentialsSignin
         console.log(err.cause)
     }
-    console.log(`${email} has logged in`)
+    // console.log(`${email} has logged in`)
     redirect('/')
 
 }
@@ -57,7 +57,7 @@ const register = async (formData: FormData) => {
         const err = error as CredentialsSignin
         console.log(err.cause)
     }
-    console.log(`${email} has logged in`)
+    // console.log(`${email} has logged in`)
     redirect('/')
 
 }
