@@ -7,7 +7,8 @@ type NoteModalType = {
     modal: boolean;
     modalType: 'add' | 'edit';
     closeModal: () => void;
-    setNote: Dispatch<SetStateAction<{ title: string; content: string; tags: string[] | never[]; }>>
+    setNote: Dispatch<SetStateAction<{ title: string; content: string; tags: string[] | never[]; }>>;
+    handleSubmit: () => void
 }
 
 type NoteType = { title: string; content: string; tags: string[] | never[] }

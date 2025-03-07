@@ -1,9 +1,19 @@
 'use client'
-import React from 'react'
+
+
+import { useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-const NoteModal = ({ closeModal, modal, modalType, note, setNote, }: NoteModalType) => {
-    console.log(note.tags.length, uuid())
+const NoteModal = ({ closeModal, modal, modalType, note, setNote, handleSubmit }: NoteModalType) => {
+    const [newTag, setNewTag] = useState<string>('')
+    const addTag = () => {
+        if (!newTag.trim()) return;
+        setNote((prev: NoteType) => ({
+            ...prev,
+            tags: [...prev.tags, newTag.trim()],
+        }));
+        setNewTag('');
+    }
     return (
         <div id="hs-medium-modal" className={`bg-blue-950/90 hs-overlay size-full ${!modal && 'hidden'} fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none`} role="dialog" aria-labelledby="hs-medium-modal-label">
             <div className={` ${modal ? 'mt-14 opacity-100' : 'mt-0 opacity-0'} duration-1000 ease-out transition-all md:max-w-2xl md:w-full m-3 md:mx-auto`}>
@@ -22,14 +32,14 @@ const NoteModal = ({ closeModal, modal, modalType, note, setNote, }: NoteModalTy
                     </div>
                     <div className="p-4 overflow-y-auto">
 
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="mb-6">
                                 <label htmlFor="tittle" className="modal-label">Note Title</label>
-                                <input type="text" id="title" name='title' className="modal-input dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500" value={note.title} placeholder="Your title here" required />
+                                <input onChange={(e) => setNote({ ...note, title: e.target.value })} type="text" id="title" name='title' className="modal-input dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500" value={note.title} placeholder="Your title here" required />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="content" className="modal-label">Note Content</label>
-                                <textarea id="content" name="content" rows={4} className="block p-4 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your note content here..." value={note.content} />
+                                <textarea onChange={e => setNote({ ...note, content: e.target.value })} id="content" name="content" rows={4} className="block p-4 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your note content here..." value={note.content} />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="password" className="modal-label">Tag List</label>
@@ -48,8 +58,8 @@ const NoteModal = ({ closeModal, modal, modalType, note, setNote, }: NoteModalTy
                                 ) : ('No tags here')}</div>
                                 <div>
                                     <div className="sm:flex rounded-lg overflow-hidden">
-                                        <input type="text" id='tag' name='tag' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500 " />
-                                        <button type='button' onClick={() => console.log('tag added')} className="py-2.5 sm:py-3 px-4 inline-flex items-center min-w-fit w-full border border-gray-200 bg-gray-50 sm:text-sm text-gray-500 -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:w-auto sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg dark:bg-neutral-700 dark:border-neutral-700 dark:text-neutral-400">Add to tag list </button>
+                                        <input value={newTag} onChange={(e) => setNewTag(e.target.value)} type="text" id='tag' name='tag' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500 " />
+                                        <button type='button' onClick={addTag} className="py-2.5 sm:py-3 px-4 inline-flex items-center min-w-fit w-full border border-gray-200 bg-gray-50 sm:text-sm text-gray-500 -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:w-auto sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg dark:bg-neutral-700 dark:border-neutral-700 dark:text-neutral-400">Add to tag list </button>
                                     </div>
                                 </div>
                             </div>

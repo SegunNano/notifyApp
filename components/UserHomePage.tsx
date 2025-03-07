@@ -5,7 +5,7 @@ import NoteModal from './NoteModal';
 
 const UserHomePage = () => {
     const [modal, setModal] = useState(false)
-    const [note, setNote] = useState<NoteType>({ title: '', tags: ['jhfksjhdfjhdk', 'hidhvuhidfuhif', 'dhfkjdfhksjhdk'], content: '' })
+    const [note, setNote] = useState<NoteType>({ title: '', tags: [], content: '' })
     const [noteId, setNoteId] = useState(false)
     const [modalType, setModalType] = useState<ModalType>('add')
     const openModal = () => {
@@ -19,6 +19,10 @@ const UserHomePage = () => {
     }
     const closeModal = () => {
         modal && setModal(prv => false)
+    }
+    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
+        console.log(note)
     }
     return (
         <>
@@ -41,7 +45,7 @@ const UserHomePage = () => {
 
                 </div>
             </div>
-            <NoteModal modal={modal} modalType={modalType} closeModal={closeModal} note={note} setNote={setNote} />
+            <NoteModal modal={modal} modalType={modalType} closeModal={closeModal} note={note} setNote={setNote} handleSubmit={handleSubmit} />
         </>
     )
 }
