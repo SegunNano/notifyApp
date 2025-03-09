@@ -8,8 +8,26 @@ type NoteModalType = {
     modalType: 'add' | 'edit';
     closeModal: () => void;
     setNote: Dispatch<SetStateAction<{ title: string; content: string; tags: string[] | never[]; }>>;
-    handleSubmit: () => void
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
-type NoteType = { title: string; content: string; tags: string[] | never[] }
+type NoteType = {
+    title: string;
+    content: string;
+    tags: string[] | never[];
+    isPinned?: boolean;
+    _id?: mongoose.Types.ObjectId;
+    author?: mongoose.Types.ObjectId | string
+    createdAt?: Date;
+    updatedAt?: Date
+}
 type ModalType = 'add' | 'edit'
+
+type UpdateNoteFuncType = (note: NoteType) => void;
+
+type NoteCardType = {
+    note: NoteType;
+    openEditModal: UpdateNoteFuncType
+    pinNote: UpdateNoteFuncType;
+    deleteNote: UpdateNoteFuncType
+}
