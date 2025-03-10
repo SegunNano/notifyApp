@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Copy, Delete, Edit, Okay, Pin } from './ui/Svg';
+import { v4 as uuid } from 'uuid'
+
 
 const NoteCard = ({ note, openEditModal, pinNote, deleteNote }: NoteCardType) => {
   const handleCopy = async () => {
@@ -78,9 +80,11 @@ const NoteCard = ({ note, openEditModal, pinNote, deleteNote }: NoteCardType) =>
           {note.content}
         </p>
         <div className="mt-3">
-          <div className="inline-flex items-center text-sm hover:underline cursor-pointer">
-            <span className="text-blue-600 dark:text-neutral-400 italic">#Legend indicator</span>
-          </div>
+          {note.tags.map(tag => (
+            <div key={uuid()} className="inline-flex items-center text-sm hover:underline cursor-pointer mr-2">
+              <span className="text-blue-600 dark:text-neutral-400 italic">#{tag}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div className="bg-gray-100 border-t border-gray-200 rounded-b-xl py-3 px-4 md:px-5 dark:bg-neutral-900 dark:border-neutral-700">

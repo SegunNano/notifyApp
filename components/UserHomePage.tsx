@@ -71,6 +71,8 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
         e.preventDefault();  // Prevents form submission from making a GET request
         setSubmitting(true);
 
+        if (!note.tags.length) return
+
         if (modalType === 'add') {
             try {
                 const res = await fetch('/api/notes/create', {

@@ -15,6 +15,12 @@ const NoteModal = ({ closeModal, modal, modalType, note, setNote, handleSubmit }
         }));
         setNewTag('');
     }
+    const handleDeleteTag = (tag: string): void => {
+        setNote((prev: NoteType) => ({
+            ...prev,
+            tags: [...prev.tags.filter(t => t !== tag)],
+        }));
+    }
     return (
         <div id="hs-medium-modal" className={`bg-blue-950/90 hs-overlay size-full ${!modal && 'hidden'} fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none`} role="dialog" aria-labelledby="hs-medium-modal-label">
             <div className={` ${modal ? 'mt-14 opacity-100' : 'mt-0 opacity-0'} duration-1000 ease-out transition-all md:max-w-2xl md:w-full m-3 md:mx-auto`}>
@@ -49,16 +55,17 @@ const NoteModal = ({ closeModal, modal, modalType, note, setNote, handleSubmit }
                                         {note.tags.map(tag => (
                                             <div key={uuid()} className='flex items-center gap-1'>
                                                 <span className='font-semibold'>#{tag} </span>
-                                                <Delete />
+                                                <button type='button' onClick={() => handleDeleteTag(tag)} className='hover:text-red-600'>
+                                                    <Delete />
+                                                </button>
                                             </div>
-
                                         ))}
                                     </div>
                                 ) : ('No tags here')}</div>
                                 <div>
                                     <div className="sm:flex rounded-lg overflow-hidden">
                                         <input value={newTag} onChange={(e) => setNewTag(e.target.value)} type="text" id='tag' name='tag' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500 " />
-                                        <button type='button' onClick={addTag} className="py-2.5 sm:py-3 px-4 inline-flex items-center min-w-fit w-full border border-gray-200 bg-gray-50 sm:text-sm text-gray-500 -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:w-auto sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg dark:bg-neutral-700 dark:border-neutral-700 dark:text-neutral-400">Add to tag list </button>
+                                        <button type='button' onClick={addTag} className="py-2.5 sm:py-3 px-4 inline-flex items-center min-w-fit w-full border  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 border-gray-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:w-auto sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg dark:border-neutral-700 dark:text-neutral-400">Add to tag list </button>
                                     </div>
                                 </div>
                             </div>
