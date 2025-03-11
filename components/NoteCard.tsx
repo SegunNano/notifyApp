@@ -3,7 +3,8 @@ import { Copy, Delete, Edit, Okay, Pin } from './ui/Svg';
 import { v4 as uuid } from 'uuid'
 
 
-const NoteCard = ({ note, openEditModal, pinNote, deleteNote }: NoteCardType) => {
+const NoteCard = ({
+  note, openEditModal, pinNote, deleteNote, tagSearch }: NoteCardType) => {
   const handleCopy = async () => {
     if (navigator.clipboard && window.isSecureContext) {
       try {
@@ -33,7 +34,7 @@ const NoteCard = ({ note, openEditModal, pinNote, deleteNote }: NoteCardType) =>
 
   const [copied, setCopied] = useState('');
   return (
-    <div className="border border-gray-200 border-t-4 border-t-blue-600 flex flex-col bg-white  shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+    <div className="border border-gray-200 border-t-4 border-t-blue-600 flex flex-col bg-white  shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70" >
       <div className="flex justify-between items-center border-b border-gray-200 rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
         <h3 className="text-lg font-bold text-gray-800 dark:text-white">
           {note.title}
@@ -81,9 +82,9 @@ const NoteCard = ({ note, openEditModal, pinNote, deleteNote }: NoteCardType) =>
         </p>
         <div className="mt-3">
           {note.tags.map(tag => (
-            <div key={uuid()} className="inline-flex items-center text-sm hover:underline cursor-pointer mr-2">
+            <button type='button' key={uuid()} onClick={() => tagSearch(tag)} className="inline-flex items-center text-sm hover:underline cursor-pointer mr-2">
               <span className="text-blue-600 dark:text-neutral-400 italic">#{tag}</span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -98,7 +99,7 @@ const NoteCard = ({ note, openEditModal, pinNote, deleteNote }: NoteCardType) =>
           }) : "N/A"}
         </p>
       </div>
-    </div>
+    </div >
   )
 }
 

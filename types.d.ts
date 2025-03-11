@@ -29,5 +29,6 @@ type NoteCardType = {
     note: NoteType;
     openEditModal: UpdateNoteFuncType
     pinNote: UpdateNoteFuncType;
-    deleteNote: UpdateNoteFuncType
+    deleteNote: UpdateNoteFuncType;
+    tagSearch: (tag: string) => void
 }
