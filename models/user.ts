@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+export const runtime = "nodejs";
 const { models, model, Schema } = mongoose
 const required: true = true
 const unique: true = true
+
 
 
 const userSchema = new Schema({
