@@ -183,7 +183,13 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
 
             <div onClick={closeModal} className="max-w-[85rem] px-3 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
-                    {notesArr.map(note => (<NoteCard key={note._id.toString()} note={note} openEditModal={openEditModal} pinNote={pinNote} deleteNote={deleteNote} tagSearch={tagSearch} />))}
+                                        {notesArr.length
+                                     ?    notesArr.map(note => (<NoteCard key={note._id.toString()} note={note} openEditModal={openEditModal} pinNote={pinNote} deleteNote={deleteNote} tagSearch={tagSearch} />))
+                                     : (
+                                        <div>
+                                            You have note at the moment.
+                                        </div>
+                                     )  }
 
                 </div>
             </div>

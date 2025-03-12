@@ -1,4 +1,5 @@
 import UserHomePage from "@/components/UserHomePage";
+import GeneralHomePage from "@/components/GeneralHomePage";
 import getSession from "@/utils/getSession";
 // import { insertManyNotes } from "@/lib/testDb";
 
@@ -12,6 +13,6 @@ export default async function Home() {
   return session ? (
     <UserHomePage userInfo={userInfo} />
   ) : (
-    <div>Home</div>
+    <GeneralHomePage />
   )
 }
