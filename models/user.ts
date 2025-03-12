@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 export const runtime = "nodejs";
+import mongoose from "mongoose";
 const { models, model, Schema } = mongoose
 const required: true = true
 const unique: true = true
