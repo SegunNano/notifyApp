@@ -24,8 +24,8 @@ Effortlessly jot down your thoughts, organize important notes, and keep track of
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/note-app.git
-   cd note-app
+   git clone https://github.com/SegunNano/notifyApp.git
+   cd notifyApp
    ```
 
 2. Install dependencies:
