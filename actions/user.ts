@@ -7,71 +7,72 @@ import { signIn, signOut } from "@/auth"
 import { CredentialsSignin } from "next-auth"
 import { redirect } from "next/navigation"
 
-
-
-const login = async (formData: FormData) => {
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
-    try {
-        await signIn('credentials', {
-            redirect: false,
-            callbackUrl: '/',
-            email,
-            password
-        })
-    } catch (error) {
-        const err = error as CredentialsSignin
-        console.log(err.cause)
-    }
-    // console.log(`${email} has logged in`)
-    redirect('/')
-
-}
-
-
-const register = async (formData: FormData) => {
+export const register = async (formData: FormData) => {
     const { hash } = bcrypt
     const username = formData.get('username') as string
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    if (!(username && email && password)) throw new Error('Please fill all fields')
+    if (!(username && email && password)) {
+        return { error: "Please fill all fields" }
+    }
 
     await connectDB()
 
     const existingUser = await User.findOne({ email })
-    if (existingUser) throw new Error('User already exist!')
+    if (existingUser) {
+        return { error: "User already exists!" }
+    }
 
     const hashedPassword = await hash(password, 10)
     await User.create({ username, email, password: hashedPassword })
 
-    console.log('User succesfully created!')
+    console.log("User successfully created!")
+
     try {
-        await signIn('credentials', {
+        const res = await signIn('credentials', {
             redirect: false,
-            callbackUrl: '/',
             email,
             password
         })
+
+        if (res?.error) return { error: res.error }
     } catch (error) {
-        const err = error as CredentialsSignin
-        console.log(err.cause)
+        console.error("Sign-in error:", error)
+        return { error: "Something went wrong during login" }
     }
-    // console.log(`${email} has logged in`)
-    redirect('/')
 
+    return redirect('/')
 }
 
-const github = async () => {
-    await signIn('github')
-}
-const google = async () => {
-    await signIn('google')
+export const login = async (formData: FormData) => {
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+
+    try {
+        const res = await signIn('credentials', {
+            redirect: false,
+            email,
+            password
+        })
+
+        if (res?.error) return { error: res.error }
+    } catch (error) {
+        console.error("Login error:", error)
+        return { error: "Invalid credentials" }
+    }
+
+    return redirect('/')
 }
 
-const logout = async () => {
-    await signOut()
+export const github = async () => {
+    return signIn('github')
 }
 
+export const google = async () => {
+    return signIn('google')
+}
 
-export { register, login, github, google, logout }
+export const logout = async () => {
+    return signOut()
+}

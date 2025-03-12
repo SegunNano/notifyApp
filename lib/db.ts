@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+export const runtime = "nodejs";
 export const db = mongoose.connection;
 
 export const disconnect = () => mongoose.connection.close();
