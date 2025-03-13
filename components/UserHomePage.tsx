@@ -2,19 +2,17 @@
 import { useState, useCallback, useEffect } from 'react'
 import NoteCard from "./NoteCard";
 import NoteModal from './NoteModal';
-import { mockNotes } from '@/lib/testDb';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { User } from 'next-auth';
 
 
 const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
-    const router = useRouter();
     const [modal, setModal] = useState(false)
     const [modalType, setModalType] = useState<ModalType>('add')
     const [note, setNote] = useState<NoteType>({ title: '', tags: [], content: '' })
     const [notesArr, setNotesArr] = useState<NoteType[]>([])
     const [searchNotesArr, setSearchNotesArr] = useState<NoteType[]>([])
-    const [submitting, setSubmitting] = useState(false);
+    // const [submitting, setSubmitting] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
 
@@ -36,17 +34,17 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
     }, [userInfo?.id]);
     const openModal = () => {
         setNote({ title: '', tags: [], content: '' })
-        setModal(prv => true)
+        setModal(true)
         setModalType('add')
     }
     const openEditModal = (n: NoteType) => {
         setNote((prv: NoteType) => ({ ...prv, ...n }))
-        setModal(prv => true)
+        setModal(true)
         setModalType('edit')
     }
     const closeModal = () => {
         if (modal) {
-            modal && setModal(prv => false)
+            modal && setModal(false)
         }
     }
     const upDateNote = async () => {
@@ -61,13 +59,13 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
         } catch (error) {
             console.log(error);
         } finally {
-            setSubmitting(false);
+            // setSubmitting(false);
             closeModal()
         }
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();  // Prevents form submission from making a GET request
-        setSubmitting(true);
+        // setSubmitting(true);
         if (!note.tags.length) return
         if (modalType === 'add') {
             try {
@@ -79,7 +77,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
             } catch (error) {
                 console.log(error);
             } finally {
-                setSubmitting(false);
+                // setSubmitting(false);
                 closeModal()
             }
         } else if (modalType === 'edit') {
@@ -98,10 +96,8 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
             res.ok && fetchNotes()
         } catch (error) {
             console.log(error);
-        } finally {
-            setSubmitting(false);
-            closeModal()
         }
+
     }
     const deleteNote = async (n: NoteType) => {
         try {
@@ -114,24 +110,15 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
             res.ok && fetchNotes()
         } catch (error) {
             console.log(error);
-        } finally {
-            setSubmitting(false);
-            closeModal()
         }
     }
     const handleSearch = () => {
         console.log(searchValue)
     }
     const tagSearch = (tag: string) => {
-        setSearchValue(prv => tag)
+        setSearchValue(tag)
     }
 
-    useEffect(() => {
-        fetchNotes();
-    }, [fetchNotes]);
-    useEffect(() => {
-        filterSearch();
-    }, [searchValue]); // Runs filterSearch when searchValue changes
 
     const filterSearch = () => {
         if (!searchValue.trim()) {
@@ -148,6 +135,14 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
 
         setNotesArr(searchRes);
     };
+    useEffect(() => {
+        fetchNotes();
+    }, [fetchNotes]);
+
+    useEffect(() => {
+        filterSearch();
+    }, [searchValue]); // Runs filterSearch when searchValue changes
+
 
 
 

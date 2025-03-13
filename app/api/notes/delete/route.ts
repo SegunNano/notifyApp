@@ -1,7 +1,7 @@
 import connectDB from "@/lib/db";
 import Note from "@/models/notes";
 
-const DELETE = async (req: Request, res: Response) => {
+const DELETE = async (req: Request) => {
     try {
         const { _id } = await req.json();
         await connectDB();

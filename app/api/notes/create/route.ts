@@ -2,7 +2,7 @@ import connectDB from "@/lib/db";
 import Note from "@/models/notes";
 import getSession from "../../../../utils/getSession";
 
-const POST = async (req: Request, res: Response) => {
+const POST = async (req: Request) => {
     const session = await getSession()
     const author = session?.user?.id
 
