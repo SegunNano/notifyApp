@@ -5,7 +5,6 @@ import Google from "next-auth/providers/google"
 import connectDB from "./lib/db"
 import User from "./models/user"
 import bcrypt from "bcryptjs"
-import type { JWT } from "next-auth/jwt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
