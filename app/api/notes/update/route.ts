@@ -3,7 +3,6 @@ import Note from "@/models/notes";
 import getSession from "../../../../utils/getSession";
 
 const PUT = async (req: Request) => {
-    const session = await getSession()
 
     try {
         const { content, tags, title, _id, isPinned } = await req.json();

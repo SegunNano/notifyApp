@@ -1,7 +1,7 @@
 import connectDB from "@/lib/db";
 import Note from "@/models/notes";
 
-const POST = async (req: Request, res: Response) => {
+const POST = async (req: Request) => {
     try {
         const { author } = await req.json(); // ✅ Parse JSON correctly
         await connectDB();
