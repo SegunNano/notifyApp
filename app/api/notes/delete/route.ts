@@ -3,7 +3,7 @@ import Note from "@/models/notes";
 
 const DELETE = async (req: Request, res: Response) => {
     try {
-        const { content, tags, title, _id, isPinned } = await req.json();
+        const { _id } = await req.json();
         await connectDB();
 
         const note = await Note.findByIdAndDelete(_id)

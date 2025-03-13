@@ -1,9 +1,14 @@
 import connectDB from "@/lib/db";
 import Note from "@/models/notes";
+import getSession from "../../../../utils/getSession";
 
 const POST = async (req: Request, res: Response) => {
+    const session = await getSession()
+    const author = session?.user?.id
+
     try {
-        const { author, content, tags, title } = await req.json(); // ✅ Parse JSON correctly
+        if (!author) return new Response('Failed to create note!', { status: 500 });
+        const { content, tags, title } = await req.json(); // ✅ Parse JSON correctly
 
         await connectDB();
 
