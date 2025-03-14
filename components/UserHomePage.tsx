@@ -54,7 +54,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     ...note, author: userInfo?.id
                 })
             });
-            await fetchNotes()
+            if (res.ok) await fetchNotes()
         } catch (error) {
             console.log(error);
         } finally {
@@ -72,7 +72,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     method: 'POST',
                     body: JSON.stringify(note)
                 });
-                await fetchNotes()
+                if (res.ok) await fetchNotes()
             } catch (error) {
                 console.log(error);
             } finally {
@@ -92,7 +92,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     ...n, isPinned
                 })
             });
-            await fetchNotes()
+            if (res.ok) await fetchNotes()
         } catch (error) {
             console.log(error);
         }
@@ -106,7 +106,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     ...n
                 })
             });
-            await fetchNotes()
+            if (res.ok) await fetchNotes()
         } catch (error) {
             console.log(error);
         }
