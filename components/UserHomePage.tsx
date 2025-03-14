@@ -2,7 +2,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import NoteCard from "./NoteCard";
 import NoteModal from './NoteModal';
-import { useRouter } from 'next/navigation';
 import { User } from 'next-auth';
 
 
@@ -44,7 +43,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
     }
     const closeModal = () => {
         if (modal) {
-            modal && setModal(false)
+            setModal(false)
         }
     }
     const upDateNote = async () => {
@@ -55,7 +54,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     ...note, author: userInfo?.id
                 })
             });
-            res.ok && fetchNotes()
+            await fetchNotes()
         } catch (error) {
             console.log(error);
         } finally {
@@ -73,7 +72,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     method: 'POST',
                     body: JSON.stringify(note)
                 });
-                res.ok && fetchNotes()
+                await fetchNotes()
             } catch (error) {
                 console.log(error);
             } finally {
@@ -93,7 +92,7 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     ...n, isPinned
                 })
             });
-            res.ok && fetchNotes()
+            await fetchNotes()
         } catch (error) {
             console.log(error);
         }
@@ -107,13 +106,10 @@ const UserHomePage = ({ userInfo }: { userInfo?: User }) => {
                     ...n
                 })
             });
-            res.ok && fetchNotes()
+            await fetchNotes()
         } catch (error) {
             console.log(error);
         }
-    }
-    const handleSearch = () => {
-        console.log(searchValue)
     }
     const tagSearch = (tag: string) => {
         setSearchValue(tag)

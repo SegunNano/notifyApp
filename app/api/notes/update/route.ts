@@ -1,6 +1,5 @@
 import connectDB from "@/lib/db";
 import Note from "@/models/notes";
-import getSession from "../../../../utils/getSession";
 
 const PUT = async (req: Request) => {
 
