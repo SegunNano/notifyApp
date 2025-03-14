@@ -6,19 +6,19 @@ import User from "@/models/user";
 import { signIn, signOut } from "@/auth";
 import { redirect } from "next/navigation";
 
-export const register = async (formData: FormData) => {
+export const register = async (formData: FormData): Promise<void> => {
     const username = formData.get('username')?.toString().trim();
     const email = formData.get('email')?.toString().trim();
     const password = formData.get('password')?.toString().trim();
 
     if (!username || !email || !password) {
-        return { error: "Please fill all fields" };
+        throw new Error("Please fill all fields");
     }
 
     await connectDB();
 
     const existingUser = await User.findOne({ email });
-    if (existingUser) return { error: "User already exists!" };
+    if (existingUser) throw new Error("User already exists!");
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({ username, email, password: hashedPassword });
@@ -27,57 +27,57 @@ export const register = async (formData: FormData) => {
 
     try {
         const res = await signIn('credentials', { redirect: false, email, password });
-        if (res?.error) return { error: res.error };
+        if (res?.error) throw new Error(res.error);
     } catch (error) {
         console.error("Sign-in error:", error);
-        return { error: "Something went wrong during login" };
+        throw new Error("Something went wrong during login");
     }
 
-    return redirect('/');
+    redirect('/');
 };
 
-export const login = async (formData: FormData) => {
+export const login = async (formData: FormData): Promise<void> => {
     const email = formData.get('email')?.toString().trim();
     const password = formData.get('password')?.toString().trim();
 
     if (!email || !password) {
-        return { error: "Invalid credentials" };
+        throw new Error("Invalid credentials");
     }
 
     try {
         const res = await signIn('credentials', { redirect: false, email, password });
-        if (res?.error) return { error: res.error };
+        if (res?.error) throw new Error(res.error);
     } catch (error) {
         console.error("Login error:", error);
-        return { error: "Invalid credentials" };
+        throw new Error("Invalid credentials");
     }
 
-    return redirect('/');
+    redirect('/');
 };
 
-export const github = async () => {
+export const github = async (): Promise<void> => {
     try {
-        return await signIn('github');
+        await signIn('github');
     } catch (error) {
         console.error("GitHub sign-in error:", error);
-        return { error: "GitHub authentication failed" };
+        throw new Error("GitHub authentication failed");
     }
 };
 
-export const google = async () => {
+export const google = async (): Promise<void> => {
     try {
-        return await signIn('google');
+        await signIn('google');
     } catch (error) {
         console.error("Google sign-in error:", error);
-        return { error: "Google authentication failed" };
+        throw new Error("Google authentication failed");
     }
 };
 
-export const logout = async () => {
+export const logout = async (): Promise<void> => {
     try {
         await signOut();
     } catch (error) {
         console.error("Logout error:", error);
-        return { error: "Logout failed" };
+        throw new Error("Logout failed");
     }
 };
