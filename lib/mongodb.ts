@@ -1,29 +1,22 @@
 import { MongoClient } from "mongodb";
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const options = {};
 
 if (!MONGODB_URI) {
     throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
-// Extend the global object to avoid TypeScript errors
-declare global {
-    var _mongoClientPromise: Promise<MongoClient> | undefined;
-}
+const options = {};
 
-let client;
+// Use a global variable to store the client instance
+let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-if (process.env.NODE_ENV === "development") {
-    if (!global._mongoClientPromise) {
-        client = new MongoClient(MONGODB_URI, options);
-        global._mongoClientPromise = client.connect();
-    }
-    clientPromise = global._mongoClientPromise;
-} else {
-    client = new MongoClient(MONGODB_URI, options);
-    clientPromise = client.connect();
+if (!(global as any)._mongoClientPromise) {
+    client = new MongoClient(MONGODB_URI);
+    (global as any)._mongoClientPromise = client.connect();
 }
+
+clientPromise = (global as any)._mongoClientPromise;
 
 export default clientPromise;
