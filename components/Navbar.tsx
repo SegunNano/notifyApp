@@ -15,14 +15,14 @@ const Navbar = async () => {
                 <nav className="relative max-w-[85rem] w-full mx-auto flex items-center justify-between gap-3 py-2 px-4 sm:px-3 lg:px-8">
 
                     <Link className="text-white flex items-center gap-1 font-semibold text-xl focus:outline-hidden focus:opacity-80  " href="/" aria-label="Brand">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="size-5">
-                    <path d="M2 6h4"/>
-                    <path d="M2 10h4"/>
-                    <path d="M2 14h4"/>
-                    <path d="M2 18h4"/>
-                    <rect width="16" height="20" x="4" y="2" rx="2"/>
-                    <path d="M16 2v20"/>
-                    </svg>Notify</Link>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-5">
+                            <path d="M2 6h4" />
+                            <path d="M2 10h4" />
+                            <path d="M2 14h4" />
+                            <path d="M2 18h4" />
+                            <rect width="16" height="20" x="4" y="2" rx="2" />
+                            <path d="M16 2v20" />
+                        </svg>Notify</Link>
 
                     <div className="md:order-3 flex justify-end items-center gap-x-1">
                         <div className="relative flex flex-wrap items-center gap-x-1.5 md:ps-2.5 mt-1 md:mt-0 md:ms-1.5">
