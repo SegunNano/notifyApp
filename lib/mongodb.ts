@@ -1,24 +1,29 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, MongoClientOptions } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI as string; // Ensuring it's a string
+const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
     throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
-// Extending global to include our MongoDB client
-declare global {
-    var _mongoClientPromise: Promise<MongoClient> | undefined;
+// Create a global variable to store the MongoDB connection
+interface GlobalWithMongo {
+    _mongoClientPromise?: Promise<MongoClient>;
 }
 
+const globalWithMongo = global as GlobalWithMongo;
+
+let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-if (!global._mongoClientPromise) {
-    const client = new MongoClient(MONGODB_URI, {});
+if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(MONGODB_URI, {
+        // You can specify additional MongoClient options here if needed
+    } as MongoClientOptions);
 
-    global._mongoClientPromise = client.connect();
+    globalWithMongo._mongoClientPromise = client.connect();
 }
 
-clientPromise = global._mongoClientPromise as Promise<MongoClient>;
+clientPromise = globalWithMongo._mongoClientPromise!;
 
 export default clientPromise;
