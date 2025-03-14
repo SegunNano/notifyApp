@@ -3,7 +3,7 @@
 import connectDB from "@/lib/db";
 import bcrypt from 'bcryptjs';
 import User from "@/models/user";
-import { signIn, signOut } from "@/auth";
+import { signIn, signOut, auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const register = async (formData: FormData): Promise<void> => {
@@ -73,8 +73,11 @@ export const google = async (): Promise<void> => {
     }
 };
 
+
 export const logout = async (): Promise<void> => {
     try {
+        const session = await auth(); // Ensure session is initialized
+        if (!session) throw new Error("No active session found.");
         await signOut();
     } catch (error) {
         console.error("Logout error:", error);
