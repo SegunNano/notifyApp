@@ -1,9 +1,9 @@
 import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGO_URI = process.env.MONGO_URI as string;
 
-if (!MONGODB_URI) {
-    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+if (!MONGO_URI) {
+    throw new Error("Please define the MONGO_URI environment variable inside .env.local");
 }
 
 declare global {
@@ -20,12 +20,12 @@ let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === "development") {
     if (!globalWithMongo._mongoClientPromise) {
-        const client = new MongoClient(MONGODB_URI, {});
+        const client = new MongoClient(MONGO_URI, {});
         globalWithMongo._mongoClientPromise = client.connect();
     }
     clientPromise = globalWithMongo._mongoClientPromise!;
 } else {
-    const client = new MongoClient(MONGODB_URI, {});
+    const client = new MongoClient(MONGO_URI, {});
     clientPromise = client.connect();
 }
 

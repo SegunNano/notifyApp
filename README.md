@@ -23,19 +23,22 @@ Effortlessly jot down your thoughts, organize important notes, and keep track of
 ## Installation & Setup
 
 1. Clone the repository:
+
    ```sh
    git clone https://github.com/SegunNano/notifyApp.git
    cd notifyApp
    ```
 
 2. Install dependencies:
+
    ```sh
    npm install
    ```
 
 3. Set up environment variables in a `.env.local` file:
+
    ```env
-   MONGODB_URI=your_mongodb_connection_string
+   MONGO_URI=your_mongodb_connection_string
    NEXTAUTH_SECRET=your_nextauth_secret
    ```
 
@@ -47,6 +50,7 @@ Effortlessly jot down your thoughts, organize important notes, and keep track of
 ## API Endpoints
 
 ### Notes
+
 - `POST /api/notes` - Fetch all notes for a user.
 - `POST /api/notes/create` - Create a new note.
 - `PUT /api/notes/update` - Update an existing note.
@@ -55,6 +59,7 @@ Effortlessly jot down your thoughts, organize important notes, and keep track of
 ## Contribution
 
 Feel free to contribute by submitting issues or pull requests. To contribute:
+
 1. Fork the repository.
 2. Create a new branch.
 3. Make your changes and commit them.
