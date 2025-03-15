@@ -5,8 +5,11 @@ import Google from "next-auth/providers/google"
 import connectDB from "./lib/db"
 import User from "./models/user"
 import bcrypt from "bcryptjs"
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import clientPromise from "./lib/mongodb";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    adapter: MongoDBAdapter(clientPromise),
     providers: [
         GitHub({
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -25,7 +28,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             authorize: async (credentials) => {
                 const email = credentials.email as string | undefined
                 const password = credentials.password as string | undefined
-
                 if (!(email && password)) throw new CredentialsSignin('Please fill all fields!')
 
                 await connectDB()
@@ -48,6 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
         })
     ],
+    trustHost: true,
     pages: {
         signIn: '/login'
     },

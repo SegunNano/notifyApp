@@ -78,7 +78,7 @@ export const logout = async (): Promise<void> => {
     try {
         const session = await auth(); // Ensure session is initialized
         if (!session) throw new Error("No active session found.");
-        await signOut();
+        await signOut({ redirectTo: "/" });
     } catch (error) {
         console.error("Logout error:", error);
         throw new Error("Logout failed");
