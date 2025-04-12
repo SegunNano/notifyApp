@@ -5,7 +5,7 @@ import { logout } from "@/actions/user";
 
 const Navbar = async () => {
   const session = await getSession();
-  console.log(session);
+  // console.log(session);
   return (
     <>
       <header className="flex flex-wrap  md:justify-start md:flex-nowrap z-50 w-full bg-[#2663eb] border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700 md:mb-5">

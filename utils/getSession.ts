@@ -3,7 +3,7 @@ import { cache } from "react";
 
 const getSession = cache(async () => {
   const session = await auth();
-  console.log(session);
+  // console.log(session);
 
   return session;
 });

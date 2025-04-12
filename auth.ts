@@ -8,8 +8,41 @@ import bcrypt from "bcryptjs";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "./lib/mongodb";
 
+// types/next-auth.d.ts or wherever your types go
+import NextAuth from "next-auth";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      username: string;
+      isAdmin: boolean;
+    };
+  }
+
+  interface User {
+    id: string;
+    email: string;
+    username: string;
+    isAdmin: boolean;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    email: string;
+    username: string;
+    isAdmin: boolean;
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: MongoDBAdapter(clientPromise),
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     GitHub({
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -38,9 +71,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!(user && user.password))
           throw new Error("Invalid email or password 1!");
 
-        console.log("Entered password:", password);
-        console.log("Stored password:", user.password);
-
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) throw new Error("Invalid email or password 2!");
 
@@ -60,16 +90,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async session({ session, token }) {
-      if (token?.sub) session.user.id = token.sub;
-      // if (typeof token?.isAdmin === "boolean") {
-      //     session.user.isAdmin = token.isAdmin;
-      // } else {
-      //     session.user.isAdmin = undefined; // Ensure it remains type-safe
-      // }
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+        session.user.username = token.username;
+        session.user.isAdmin = token.isAdmin;
+      }
       return session;
     },
     async jwt({ token, user }) {
-      // if (user) token.isAdmin = user.isAdmin
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.username = user.username;
+        token.isAdmin = user.isAdmin;
+      }
       return token;
     },
     signIn: async ({ user, account }) => {
