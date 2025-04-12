@@ -9,7 +9,6 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "./lib/mongodb";
 
 // types/next-auth.d.ts or wherever your types go
-import NextAuth from "next-auth";
 
 declare module "next-auth" {
   interface Session {
@@ -19,22 +18,6 @@ declare module "next-auth" {
       username: string;
       isAdmin: boolean;
     };
-  }
-
-  interface User {
-    id: string;
-    email: string;
-    username: string;
-    isAdmin: boolean;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: string;
-    email: string;
-    username: string;
-    isAdmin: boolean;
   }
 }
 
@@ -91,10 +74,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-        session.user.username = token.username;
-        session.user.isAdmin = token.isAdmin;
+        // session.user.id = token.id;
+        // session.user.email = token.email;
+        // session.user.username = token.username;
+        // session.user.isAdmin = token.isAdmin;
       }
       return session;
     },
@@ -102,8 +85,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.username = user.username;
-        token.isAdmin = user.isAdmin;
+        // token.username = user.username;
+        // token.isAdmin = user.isAdmin;
       }
       return token;
     },
